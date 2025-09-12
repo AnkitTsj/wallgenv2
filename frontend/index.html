@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Wallpaper Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="background-container"></div>
+
+    <div class="main-content">
+        <header>
+            <h1>AI Wallpaper Generator</h1>
+            <p id="tagline"></p> 
+        </header>
+
+        <main>
+            <div class="controls">
+                <div class="control-group">
+                    <label for="style-select">Style</label>
+                    <select id="style-select">
+                        <option value="Geometric">Geometric</option>
+                        <option value="Organic">Organic</option>
+                        <option value="Vibrant">Vibrant</option>
+                        <option value="Minimal">Minimal</option>
+                        <option value="Fractal">Fractal</option>
+                        <option value="Gradient" selected>Gradient</option>
+                        <option value="Crystal">Crystal</option>
+                        <option value="Retro Wave">Retro Wave</option>
+                        <option value="Botanical">Botanical</option>
+                        <option value="Space Cosmic">Space Cosmic</option>
+                        <option value="Psychedelic">Psychedelic</option>
+                        <option value="Industrial">Industrial</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="color-input">Color Influence</label>
+                    <input type="text" id="color-input" placeholder="e.g., pastel pink, dark green">
+                </div>
+                <div class="control-group">
+                    <label for="resolution-select">Resolution</label>
+                    <select id="resolution-select">
+                        <option value="Desktop (1920x1080)">Desktop (1920x1080)</option>
+                        <option value="Mobile Portrait (1080x1920)">Mobile Portrait (1080x1920)</option>
+                        <option value="Square (1080x1080)">Square (1080x1080)</option>
+                        <option value="Ultrawide (2560x1080)">Ultrawide (2560x1080)</option>
+                        <option value="4K Desktop (3840x2160)">4K Desktop (3840x2160)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="seed-input">Seed</label>
+                    <div class="seed-wrapper">
+                        <input type="number" id="seed-input" value="42">
+                        <button id="random-seed-btn" title="Randomize Seed">🎲</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="generate-btn"> Generate</button>
+                <button id="surprise-btn"> Surprise Me!</button>
+            </div>
+
+            <div class="output">
+                <div id="status-display" class="status">Click Generate to start!</div>
+                <div id="loader" class="hidden"></div>
+                <img id="result-image" src="" alt="Generated Wallpaper" class="hidden">
+                
+                <div id="post-generation-tools" class="hidden">
+                    <button id="copy-seed-btn" title="Copy Seed">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        <span id="copy-seed-feedback">Copy Seed</span>
+                    </button>
+                    <button id="download-btn" title="Download Wallpaper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>Download</span>
+                    </button>
+                </div>
+
+                <div id="palette-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <section id="recent-creations" class="hidden">
+        <h2>Recent Creations</h2>
+        <div id="recent-gallery" class="hide-scrollbar"></div>
+    </section>
+
+    <div class="side-text">
+        <span>&copy; 2025 Wallbeauti | AI Wallpaper Generator</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

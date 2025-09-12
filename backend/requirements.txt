@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+torch
+accelerate
+diffusers
+scikit-learn
+Pillow
+numpy 
+python-multipart
