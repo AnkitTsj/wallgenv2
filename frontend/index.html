@@ -7,12 +7,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="particles-container" id="particles"></div>
+    
     <div id="background-container"></div>
+
+    <div class="theme-selector">
+        <div class="theme-btn theme-warm active" data-theme="warm" title="Warm Theme"></div>
+        <div class="theme-btn theme-cool" data-theme="cool" title="Cool Theme"></div>
+        <div class="theme-btn theme-coral" data-theme="coral" title="Coral Theme"></div>
+    </div>
 
     <div class="main-content">
         <header>
             <h1>AI Wallpaper Generator</h1>
-            <p id="tagline"></p> 
+            <p id="tagline"></p>
         </header>
 
         <main>
@@ -34,10 +42,12 @@
                         <option value="Industrial">Industrial</option>
                     </select>
                 </div>
+                
                 <div class="control-group">
                     <label for="color-input">Color Influence</label>
                     <input type="text" id="color-input" placeholder="e.g., pastel pink, dark green">
                 </div>
+                
                 <div class="control-group">
                     <label for="resolution-select">Resolution</label>
                     <select id="resolution-select">
@@ -48,6 +58,7 @@
                         <option value="4K Desktop (3840x2160)">4K Desktop (3840x2160)</option>
                     </select>
                 </div>
+                
                 <div class="control-group">
                     <label for="seed-input">Seed</label>
                     <div class="seed-wrapper">
@@ -69,11 +80,18 @@
                 
                 <div id="post-generation-tools" class="hidden">
                     <button id="copy-seed-btn" title="Copy Seed">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
                         <span id="copy-seed-feedback">Copy Seed</span>
                     </button>
                     <button id="download-btn" title="Download Wallpaper">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
                         <span>Download</span>
                     </button>
                 </div>

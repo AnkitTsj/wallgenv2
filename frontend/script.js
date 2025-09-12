@@ -1,5 +1,7 @@
+
 document.addEventListener('DOMContentLoaded', () => {
-    const allElements = {
+    // Element References
+    const elements = {
         generateBtn: document.getElementById('generate-btn'),
         surpriseBtn: document.getElementById('surprise-btn'),
         randomSeedBtn: document.getElementById('random-seed-btn'),
@@ -18,198 +20,362 @@ document.addEventListener('DOMContentLoaded', () => {
         tagline: document.getElementById('tagline'),
         recentCreationsSection: document.getElementById('recent-creations'),
         recentGallery: document.getElementById('recent-gallery'),
+        particlesContainer: document.getElementById('particles'),
     };
+
+    // API URL for your Python backend
     const API_URL = 'http://127.0.0.1:8000';
 
+    // State Variables
     let backgroundImages = [];
-    const MAX_BG_IMAGES = 5;
     let recentCreations = [];
-    const MAX_RECENTS = 5;
     let statusInterval;
+    const MAX_BG_IMAGES = 6;
+    const MAX_RECENTS = 8;
 
-    const typeText = (element, text, speed = 75) => {
+    // Enhanced Particles System
+    function createParticles() {
+        const colors = ['#4D6473', '#A58A73', '#B59B67', '#F4C2C2', '#E6CFC1'];
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 8 + 4 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            elements.particlesContainer.appendChild(particle);
+        }
+    }
+
+    // Enhanced Typing Animation
+    function typeText(element, text, speed = 100) {
         let i = 0;
-        element.innerHTML = ""; 
+        element.innerHTML = "";
         const typing = setInterval(() => {
             if (i < text.length) {
                 element.innerHTML += text.charAt(i);
                 i++;
             } else {
                 clearInterval(typing);
+                setTimeout(() => {
+                    element.style.textShadow = '0 0 20px rgba(77, 100, 115, 0.5)';
+                    setTimeout(() => {
+                        element.style.textShadow = 'none';
+                    }, 1000);
+                }, 500);
             }
         }, speed);
-    };
-    typeText(allElements.tagline, "Create unique, high-resolution wallpapers with AI.");
+    }
 
-    const addFloatingImage = (imageUrl) => {
+    // Enhanced Floating Background Logic
+    function addFloatingImage(imageUrl) {
         const img = document.createElement('img');
         img.src = imageUrl;
         img.className = 'floating-bg';
         if (backgroundImages.length >= MAX_BG_IMAGES) {
             const oldImg = backgroundImages.shift();
-            oldImg.style.opacity = 0;
+            oldImg.style.opacity = '0';
+            oldImg.style.transform = 'scale(0.8)';
             setTimeout(() => oldImg.remove(), 1000);
         }
-        const size = Math.random() * 200 + 150;
+        const size = Math.random() * 180 + 120;
         img.style.width = `${size}px`;
         img.style.height = 'auto';
-        img.style.top = `${Math.random() * 100 - 10}%`;
-        img.style.left = `${Math.random() * 100 - 10}%`;
-        img.style.animationDuration = `${Math.random() * 20 + 25}s`;
-        allElements.backgroundContainer.appendChild(img);
+        img.style.top = `${Math.random() * 80 + 10}%`;
+        img.style.left = `${Math.random() * 80 + 10}%`;
+        img.style.animationDuration = `${Math.random() * 15 + 20}s`;
+        img.style.zIndex = Math.floor(Math.random() * 3) + 1;
+        elements.backgroundContainer.appendChild(img);
         backgroundImages.push(img);
-    };
+    }
 
-    const startStatusUpdates = () => {
+    // Enhanced Status Messages
+    function startStatusUpdates() {
         const messages = [
-            "Painting with pixels...",
-            "Consulting the digital muse...",
-            "Reticulating splines...",
-            "Unleashing creative algorithms...",
-            "Herding electrons...",
-            "Almost there..."
+            "🎨 Mixing digital paint...",
+            "🌟 Consulting the AI muse...",
+            "⚡ Channeling creative energy...",
+            "🎭 Weaving visual magic...",
+            "🚀 Launching imagination...",
+            "✨ Almost there..."
         ];
         let msgIndex = 0;
-        allElements.statusDisplay.textContent = messages[msgIndex];
+        elements.statusDisplay.textContent = messages[msgIndex];
         statusInterval = setInterval(() => {
             msgIndex = (msgIndex + 1) % messages.length;
-            allElements.statusDisplay.textContent = messages[msgIndex];
-        }, 2000);
-    };
+            elements.statusDisplay.textContent = messages[msgIndex];
+        }, 2500);
+    }
 
-    const stopStatusUpdates = (finalMessage) => {
+    function stopStatusUpdates(finalMessage) {
         clearInterval(statusInterval);
-        allElements.statusDisplay.textContent = finalMessage;
-    };
+        elements.statusDisplay.textContent = finalMessage;
+        elements.statusDisplay.style.transform = 'scale(1.1)';
+        elements.statusDisplay.style.color = '#4D6473';
+        setTimeout(() => {
+            elements.statusDisplay.style.transform = 'scale(1)';
+            elements.statusDisplay.style.color = '';
+        }, 300);
+    }
 
-    const renderRecents = () => {
+    // Enhanced Recent Creations
+    function renderRecents() {
         if (recentCreations.length === 0) return;
-        allElements.recentGallery.innerHTML = "";
-        recentCreations.forEach(creation => {
+        elements.recentGallery.innerHTML = "";
+        recentCreations.forEach((creation, index) => {
             const img = document.createElement('img');
             img.src = creation.src;
             img.title = `Style: ${creation.style}, Seed: ${creation.seed}`;
+            img.style.animationDelay = `${index * 0.1}s`;
             img.addEventListener('click', () => {
-                allElements.styleSelect.value = creation.style;
-                allElements.seedInput.value = creation.seed;
-                allElements.colorInput.value = creation.color || "";
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                elements.styleSelect.value = creation.style;
+                elements.seedInput.value = creation.seed;
+                elements.colorInput.value = creation.color || "";
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                elements.styleSelect.style.boxShadow = '0 0 20px rgba(77, 100, 115, 0.5)';
+                setTimeout(() => {
+                    elements.styleSelect.style.boxShadow = '';
+                }, 2000);
             });
-            allElements.recentGallery.appendChild(img);
+            elements.recentGallery.appendChild(img);
         });
-        allElements.recentCreationsSection.classList.remove('hidden');
-    };
+        elements.recentCreationsSection.classList.remove('hidden');
+    }
 
-    const performGeneration = async () => {
-        allElements.loader.classList.remove('hidden');
-        allElements.resultImage.classList.add('hidden');
-        allElements.paletteContainer.innerHTML = '';
-        allElements.generateBtn.disabled = true;
-        allElements.surpriseBtn.disabled = true;
-        allElements.postGenerationTools.classList.add('hidden');
+    // Enhanced Color Palette Display
+    function displayColorPalette(colors) {
+        elements.paletteContainer.innerHTML = '';
+        colors.forEach((color, index) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'color-swatch-wrapper';
+            wrapper.style.animationDelay = `${index * 0.1}s`;
+            const swatch = document.createElement('div');
+            swatch.className = 'color-swatch';
+            swatch.style.backgroundColor = color;
+            const hexCode = document.createElement('span');
+            hexCode.className = 'hex-code';
+            hexCode.textContent = color;
+            swatch.addEventListener('click', () => {
+                navigator.clipboard.writeText(color).then(() => {
+                    hexCode.textContent = 'Copied!';
+                    swatch.style.transform = 'scale(1.3) rotate(10deg)';
+                    setTimeout(() => {
+                        hexCode.textContent = color;
+                        swatch.style.transform = '';
+                    }, 1500);
+                });
+            });
+            wrapper.appendChild(swatch);
+            wrapper.appendChild(hexCode);
+            elements.paletteContainer.appendChild(wrapper);
+        });
+    }
+
+    // **UPDATED** Generation Function with actual API call
+    async function performGeneration() {
+        elements.loader.classList.remove('hidden');
+        elements.resultImage.classList.add('hidden');
+        elements.paletteContainer.innerHTML = '';
+        elements.generateBtn.disabled = true;
+        elements.surpriseBtn.disabled = true;
+        elements.postGenerationTools.classList.add('hidden');
         startStatusUpdates();
 
         const generationData = {
-            style: allElements.styleSelect.value,
+            style: elements.styleSelect.value,
             resolution: document.getElementById('resolution-select').value,
-            seed: parseInt(allElements.seedInput.value, 10),
-            color: allElements.colorInput.value,
+            seed: parseInt(elements.seedInput.value, 10),
+            color: elements.colorInput.value,
             steps: 4,
         };
 
         try {
             const response = await fetch(`${API_URL}/generate-wallpaper/`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(generationData),
             });
-            if (!response.ok) { throw new Error(`Server error! Status: ${response.status}`); }
+
+            if (!response.ok) {
+                throw new Error(`Server error! Status: ${response.status}`);
+            }
+
             const data = await response.json();
-            
-            allElements.resultImage.src = data.image;
-            allElements.resultImage.classList.remove('hidden');
+
+            // Display result
+            elements.resultImage.src = data.image;
+            elements.resultImage.classList.remove('hidden');
+
+            // Add to floating background
             addFloatingImage(data.image);
-            allElements.postGenerationTools.classList.remove('hidden');
-                        data.palette.forEach(color => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'color-swatch-wrapper';
 
-                const swatch = document.createElement('div');
-                swatch.className = 'color-swatch';
-                swatch.style.backgroundColor = color;
-                swatch.title = `Click to copy ${color}`;
-                
-                const hexCode = document.createElement('div');
-                hexCode.className = 'hex-code';
-                hexCode.textContent = color;
+            // Show tools and palette
+            elements.postGenerationTools.classList.remove('hidden');
+            displayColorPalette(data.palette);
 
-                swatch.addEventListener('click', () => {
-                    navigator.clipboard.writeText(color);
-                    hexCode.textContent = 'Copied!';
-                    setTimeout(() => { hexCode.textContent = color; }, 1500);
-                });
-                
-                wrapper.appendChild(swatch);
-                wrapper.appendChild(hexCode); 
-                paletteContainer.appendChild(wrapper);
+            // Add to recents
+            recentCreations.unshift({ ...generationData,
+                src: data.image
             });
-            
-            recentCreations.unshift({ ...generationData, src: data.image });
             if (recentCreations.length > MAX_RECENTS) {
                 recentCreations.pop();
             }
             renderRecents();
 
-            stopStatusUpdates('Done! ✨');
+            stopStatusUpdates('✨ Masterpiece created!');
+
         } catch (error) {
-            console.error('Failed to generate wallpaper:', error);
+            console.error('Generation failed:', error);
             stopStatusUpdates(`Error: ${error.message}`);
         } finally {
-            allElements.loader.classList.add('hidden');
-            allElements.generateBtn.disabled = false;
-            allElements.surpriseBtn.disabled = false;
+            elements.loader.classList.add('hidden');
+            elements.generateBtn.disabled = false;
+            elements.surpriseBtn.disabled = false;
         }
-    };
+    }
 
-    const updateRandomSeed = async () => {
+    // **UPDATED** Random Seed Generator with actual API call
+    async function updateRandomSeed() {
         try {
             const response = await fetch(`${API_URL}/random-seed/`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch seed from server.');
+            }
             const data = await response.json();
-            allElements.seedInput.value = data.seed;
+            elements.seedInput.value = data.seed;
+
+            // Visual feedback
+            elements.seedInput.style.background = 'rgba(77, 100, 115, 0.2)';
+            setTimeout(() => {
+                elements.seedInput.style.background = '';
+            }, 500);
+
         } catch (error) {
             console.error('Failed to get random seed:', error);
-            allElements.seedInput.value = Math.floor(Math.random() * 999999);
+            // Fallback to client-side random number if API fails
+            elements.seedInput.value = Math.floor(Math.random() * 999999);
         }
-    };
+    }
 
-    allElements.generateBtn.addEventListener('click', performGeneration);
-    allElements.randomSeedBtn.addEventListener('click', updateRandomSeed);
-    
-    allElements.surpriseBtn.addEventListener('click', async () => {
-        const options = allElements.styleSelect.options;
+    // Theme Switching
+    function initThemeSelector() {
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        const root = document.documentElement;
+        themeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                themeButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const theme = btn.dataset.theme;
+                switch (theme) {
+                    case 'warm':
+                        root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #B59B67, #A58A73)');
+                        break;
+                    case 'cool':
+                        root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #4D6473, #3C505C)');
+                        break;
+                    case 'coral':
+                        root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #F4C2C2, #FFB7C5)');
+                        break;
+                }
+            });
+        });
+    }
+
+    // Event Listeners
+    elements.generateBtn.addEventListener('click', performGeneration);
+    elements.randomSeedBtn.addEventListener('click', updateRandomSeed);
+
+    elements.surpriseBtn.addEventListener('click', async () => {
+        const options = elements.styleSelect.options;
         const randomIndex = Math.floor(Math.random() * options.length);
-        allElements.styleSelect.value = options[randomIndex].value;
-        allElements.colorInput.value = ""; 
+        elements.styleSelect.value = options[randomIndex].value;
+        elements.colorInput.value = "";
         await updateRandomSeed();
-        performGeneration();
+        elements.surpriseBtn.style.transform = 'rotate(360deg)';
+        setTimeout(() => {
+            elements.surpriseBtn.style.transform = '';
+            performGeneration();
+        }, 500);
     });
-    allElements.copySeedBtn.addEventListener('click', () => {
-        const seedValue = seedInput.value;
+
+    elements.copySeedBtn.addEventListener('click', () => {
+        const seedValue = elements.seedInput.value;
         navigator.clipboard.writeText(seedValue).then(() => {
-            copySeedFeedback.textContent = 'Copied!';
-            setTimeout(() => { copySeedFeedback.textContent = 'Copy Seed'; }, 2000);
+            elements.copySeedFeedback.textContent = 'Copied!';
+            elements.copySeedBtn.style.background = 'rgba(77, 100, 115, 0.3)';
+            setTimeout(() => {
+                elements.copySeedFeedback.textContent = 'Copy Seed';
+                elements.copySeedBtn.style.background = '';
+            }, 2000);
         });
     });
 
-    allElements.downloadBtn.addEventListener('click', () => {
+    elements.downloadBtn.addEventListener('click', () => {
+        if (!elements.resultImage.src || elements.resultImage.src.startsWith('http')) return;
         const link = document.createElement('a');
-        link.href = resultImage.src;
-        const style = styleSelect.value.replace(/\s+/g, '-').toLowerCase();
-        const seed = seedInput.value;
+        link.href = elements.resultImage.src;
+        const style = elements.styleSelect.value.replace(/\s+/g, '-').toLowerCase();
+        const seed = elements.seedInput.value;
         link.download = `wallpaper-${style}-${seed}.png`;
-        
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        elements.downloadBtn.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+            elements.downloadBtn.style.transform = '';
+        }, 200);
     });
+
+    // Enhanced Input Interactions
+    [elements.styleSelect, elements.colorInput, elements.seedInput].forEach(input => {
+        input.addEventListener('focus', (e) => {
+            e.target.style.transform = 'translateY(-2px)';
+        });
+        input.addEventListener('blur', (e) => {
+            e.target.style.transform = '';
+        });
+    });
+
+    // Initialize Everything
+    createParticles();
+    typeText(elements.tagline, "Create unique, high-resolution wallpapers with AI magic ✨");
+    initThemeSelector();
+
+    // Smooth scrolling for better UX
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const parallax = elements.backgroundContainer;
+        const speed = scrolled * 0.5;
+        parallax.style.transform = `translateY(${speed}px)`;
+    });
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey || e.metaKey) {
+            switch (e.key) {
+                case 'Enter':
+                    e.preventDefault();
+                    performGeneration();
+                    break;
+                case 'r':
+                    e.preventDefault();
+                    updateRandomSeed();
+                    break;
+                case 's':
+                    e.preventDefault();
+                    elements.surpriseBtn.click();
+                    break;
+            }
+        }
+    });
+
+    console.log('AI Wallpaper Generator initialized successfully!');
 });
