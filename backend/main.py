@@ -21,7 +21,8 @@ pipe = StableDiffusionPipeline.from_pretrained(
     torch_dtype=torch.float16 if device == "cuda" else torch.float32,
     safety_checker=None,
     requires_safety_checker=False,
-    low_cpu_mem_usage=True
+    low_cpu_mem_usage=True,
+    cache_dir = "../models"
 )
 pipe.scheduler = LCMScheduler.from_config(pipe.scheduler.config)
 pipe = pipe.to(device)
