@@ -1,6 +1,5 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Element References
     const elements = {
         generateBtn: document.getElementById('generate-btn'),
         surpriseBtn: document.getElementById('surprise-btn'),
@@ -95,12 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Enhanced Status Messages
     function startStatusUpdates() {
         const messages = [
-            "🎨 Mixing digital paint...",
-            "🌟 Consulting the AI muse...",
-            "⚡ Channeling creative energy...",
-            "🎭 Weaving visual magic...",
-            "🚀 Launching imagination...",
-            "✨ Almost there..."
+            " Mixing digital paint...",
+            " Consulting the AI muse...",
+            " Channeling creative energy...",
+            " Weaving visual magic...",
+            " Launching imagination...",
+            " Almost there..."
         ];
         let msgIndex = 0;
         elements.statusDisplay.textContent = messages[msgIndex];
@@ -230,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             renderRecents();
 
-            stopStatusUpdates('✨ Masterpiece created!');
+            stopStatusUpdates(' Masterpiece created!');
 
         } catch (error) {
             console.error('Generation failed:', error);
@@ -260,36 +259,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Failed to get random seed:', error);
-            // Fallback to client-side random number if API fails
             elements.seedInput.value = Math.floor(Math.random() * 999999);
         }
     }
 
-    // Theme Switching
-    function initThemeSelector() {
-        const themeButtons = document.querySelectorAll('.theme-btn');
-        const root = document.documentElement;
-        themeButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                themeButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const theme = btn.dataset.theme;
-                switch (theme) {
-                    case 'warm':
-                        root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #B59B67, #A58A73)');
-                        break;
-                    case 'cool':
-                        root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #4D6473, #3C505C)');
-                        break;
-                    case 'coral':
-                        root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #F4C2C2, #FFB7C5)');
-                        break;
-                }
-            });
-        });
-    }
-
-    // Event Listeners
     elements.generateBtn.addEventListener('click', performGeneration);
     elements.randomSeedBtn.addEventListener('click', updateRandomSeed);
 
@@ -346,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Everything
     createParticles();
-    typeText(elements.tagline, "Create unique, high-resolution wallpapers with AI magic ✨");
+    typeText(elements.tagline, "Create unique, high-resolution wallpapers with AI magic ");
     initThemeSelector();
 
     // Smooth scrolling for better UX
