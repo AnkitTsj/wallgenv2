@@ -1,0 +1,14 @@
+ prompts = {
+        "Geometric": "abstract waves, ethereal, high resolution seamless geometric pattern, isometric shapes, bright vivid color blocking, ultra-sharp lines, elegant 8k wallpaper, inspired by Bauhaus, center-focused composition",
+        "Organic": "flowing organic forms, silky fluid textures, soft lighting, high-detail depth, oil painting feel, zen abstract design",
+        "Vibrant": "futuristic neon shapes, cyberpunk color palette, dark citylight background, glowing fractals, high contrast, vivid reflections, perfect for phone wallpaper, neon geometric shapes, cyberpunk style, dark background",
+        "Minimal": "abstract triangular shapes, bright pastel colors, modern wallpaper",
+    "Fractal": "complex fractal spirals, infinite zoom illusion, glowing edges, depth of field blur, mathematical precision, cosmic art, Mandelbrot-inspired structure",
+    "Gradient": "smooth color gradients, organic flowing lines, watercolor style, soft gradients abstract waves, ethereal, high resolution seamless geometric pattern, isometric shapes, bright vivid color blocking, ultra-sharp lines, elegant 8k wallpaper, inspired by Bauhaus, center-focused composition",
+    "Crystal": "high-resolution crystal surfaces, prism reflections, iridescent colors, shattered glass texture, futuristic diamond shapes, cinematic lighting",
+    "Retro Wave": "synthwave aesthetic, neon grid lines, 1980s retro futuristic, purple pink gradients",
+    "Botanical": "botanical illustrations, detailed leaves and flowers, vintage naturalist style, earth tones",
+    "Space Cosmic": "deep space nebula, cosmic dust clouds, distant galaxies, purple blue cosmic colors",
+    "Psychedelic": "trippy psychedelic patterns, kaleidoscope effects, vibrant swirling colors, mind-bending",
+    "Industrial": "metal textures, rust patterns, industrial materials, concrete and steel aesthetics"
+    }
