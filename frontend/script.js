@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let recentCreations = [];
     let statusInterval;
     const MAX_BG_IMAGES = 6;
+<<<<<<< HEAD
     const MAX_RECENTS = 4;
 
     // Preloaded example images for floating background
@@ -41,6 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'examples/img5.png',
         'examples/img6.png',
     ];
+=======
+    const MAX_RECENTS = 8;
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
 
     // Enhanced Particles System
     function createParticles() {
@@ -101,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         backgroundImages.push(img);
     }
 
+<<<<<<< HEAD
     function addFloatingImageFromExamples() {
         const imageUrl = EXAMPLE_IMAGES[Math.floor(Math.random() * EXAMPLE_IMAGES.length)];
         addFloatingImage(imageUrl);
@@ -218,6 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+=======
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
     // Enhanced Status Messages
     function startStatusUpdates() {
         const messages = [
@@ -340,6 +347,11 @@ document.addEventListener('DOMContentLoaded', () => {
             elements.resultImage.src = data.image;
             elements.resultImage.classList.remove('hidden');
 
+<<<<<<< HEAD
+=======
+            // Add to floating background
+            addFloatingImage(data.image);
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
 
             // Show tools and palette
             elements.postGenerationTools.classList.remove('hidden');
@@ -445,6 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Everything
     createParticles();
     typeText(elements.tagline, "Create unique, high-resolution wallpapers with AI magic ");
+<<<<<<< HEAD
     if (typeof initThemeSelector === 'function') {
         initThemeSelector();
     }
@@ -459,6 +472,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Keep floating background anchored during scroll (no parallax)
     window.addEventListener('scroll', () => {
         elements.backgroundContainer.style.transform = 'translateY(0)';
+=======
+    initThemeSelector();
+
+    // Smooth scrolling for better UX
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const parallax = elements.backgroundContainer;
+        const speed = scrolled * 0.5;
+        parallax.style.transform = `translateY(${speed}px)`;
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
     });
 
     // Add keyboard shortcuts

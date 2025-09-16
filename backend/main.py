@@ -3,8 +3,11 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import torch
+<<<<<<< HEAD
 import uvicorn
 from fastapi.staticfiles import StaticFiles
+=======
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
 from diffusers import StableDiffusionPipeline, LCMScheduler
 from PIL import Image
 import numpy as np
@@ -13,6 +16,7 @@ import random
 import io
 import base64
 from typing import Optional
+<<<<<<< HEAD
 import os
 # port = int(os.getenv("PORT", 7860))
 
@@ -122,6 +126,31 @@ def load_pipeline():
     print("Model has been loaded successfully!")
     return pipe
 
+=======
+
+print("Loading model at startup...")
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using device: {device}")
+
+pipe = StableDiffusionPipeline.from_pretrained(
+    "SimianLuo/LCM_Dreamshaper_v7",
+    torch_dtype=torch.float16 if device == "cuda" else torch.float32,
+    safety_checker=None,
+    requires_safety_checker=False,
+    low_cpu_mem_usage=True,
+    cache_dir = "../models"
+)
+pipe.scheduler = LCMScheduler.from_config(pipe.scheduler.config)
+pipe = pipe.to(device)
+
+if device == "cuda":
+    pipe.enable_model_cpu_offload()
+else:
+    pipe.enable_attention_slicing()
+print("Model has been loaded successfully!")
+
+# --- Helper Functions (Refactored for API) ---
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
 def extract_colors(image: Image.Image, num_colors=6):
     img_array = np.array(image)
     pixels = img_array.reshape(-1, 3)
@@ -135,7 +164,10 @@ def resize_image(image: Image.Image, width: int, height: int):
     return image.resize((width, height), Image.Resampling.LANCZOS)
 
 app = FastAPI()
+<<<<<<< HEAD
 # app.mount("/", StaticFiles(directory="../frontend", html=True), name="static")
+=======
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
 
 app.add_middleware(
     CORSMiddleware,
@@ -155,6 +187,7 @@ class GenerationRequest(BaseModel):
 @app.post("/generate-wallpaper/")
 async def generate_wallpaper_endpoint(request: GenerationRequest):
     prompts = {
+<<<<<<< HEAD
         "Geometric": "sharp geometric patterns, triangular tessellations, hexagonal grids, precise angular shapes, colorful polygon arrangements, geometric mandala designs, crystalline symmetric patterns, abstract mathematical forms, vector art precision, clean geometric compositions, bright geometric color blocks, structured pattern design, 8k wallpaper",
         
         "Organic": "flowing organic forms, silky fluid textures, soft ethereal lighting, high-detail depth, oil painting feel, zen abstract design, bioluminescent flowing lines, translucent silk ribbons, watercolor blending, natural formations",
@@ -178,6 +211,20 @@ async def generate_wallpaper_endpoint(request: GenerationRequest):
         "Psychedelic": "trippy psychedelic patterns, kaleidoscope effects, vibrant swirling colors, mind-bending fractals, mandala patterns, liquid light shows, synesthetic color flows, geometric portals, infinite pattern recursion",
         
         "Industrial": "metal textures, rust patterns, industrial materials, concrete and steel aesthetics, weathered surfaces, industrial photography, high contrast lighting, urban decay patterns, metallic reflections"
+=======
+        "Geometric": "abstract waves, ethereal, high resolution seamless geometric pattern, isometric shapes, bright vivid color blocking, ultra-sharp lines, elegant 8k wallpaper, inspired by Bauhaus, center-focused composition",
+        "Organic": "flowing organic forms, silky fluid textures, soft lighting, high-detail depth, oil painting feel, zen abstract design",
+        "Vibrant": "futuristic neon shapes, cyberpunk color palette, dark citylight background, glowing fractals, high contrast, vivid reflections, perfect for phone wallpaper, neon geometric shapes, cyberpunk style, dark background",
+        "Minimal": "abstract triangular shapes, bright pastel colors, modern wallpaper",
+    "Fractal": "complex fractal spirals, infinite zoom illusion, glowing edges, depth of field blur, mathematical precision, cosmic art, Mandelbrot-inspired structure",
+    "Gradient": "smooth color gradients, organic flowing lines, watercolor style, soft gradients",
+    "Crystal": "high-resolution crystal surfaces, prism reflections, iridescent colors, shattered glass texture, futuristic diamond shapes, cinematic lighting",
+    "Retro Wave": "synthwave aesthetic, neon grid lines, 1980s retro futuristic, purple pink gradients",
+    "Botanical": "botanical illustrations, detailed leaves and flowers, vintage naturalist style, earth tones",
+    "Space Cosmic": "deep space nebula, cosmic dust clouds, distant galaxies, purple blue cosmic colors",
+    "Psychedelic": "trippy psychedelic patterns, kaleidoscope effects, vibrant swirling colors, mind-bending",
+    "Industrial": "metal textures, rust patterns, industrial materials, concrete and steel aesthetics"
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
     }
 
     resolutions = {
@@ -187,6 +234,7 @@ async def generate_wallpaper_endpoint(request: GenerationRequest):
         "Ultrawide (2560x1080)": (2560, 1080),
         "4K Desktop (3840x2160)": (3840, 2160),
     }
+<<<<<<< HEAD
     base_prompt = prompts.get(request.style, prompts["Gradient"])
     
     # Add quality enhancers and style variations
@@ -230,6 +278,12 @@ async def generate_wallpaper_endpoint(request: GenerationRequest):
     
     # Add negative prompt to avoid common issues and maintain abstract focus
     negative_prompt = "low quality, blurry, pixelated, watermark, text, logo, signature, artifacts, distorted, people, person, human, face, car, vehicle, building, realistic objects, photography, portrait, landscape"
+=======
+    final_prompt = prompts.get(request.style)
+
+    if request.color and request.color.strip():
+            final_prompt += f", with a color theme of {request.color.strip()}"
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
     try:
         # Set seed
         torch.manual_seed(request.seed)
@@ -237,6 +291,7 @@ async def generate_wallpaper_endpoint(request: GenerationRequest):
             torch.cuda.manual_seed(request.seed)
 
         # Generate base image
+<<<<<<< HEAD
         # Ensure pipeline is loaded lazily
         p = load_pipeline()
         with torch.no_grad():
@@ -245,6 +300,13 @@ async def generate_wallpaper_endpoint(request: GenerationRequest):
                 num_inference_steps=request.steps,
                 guidance_scale=1.0,
                 negative_prompt=negative_prompt,
+=======
+        with torch.no_grad():
+            base_image = pipe(
+                final_prompt,
+                num_inference_steps=request.steps,
+                guidance_scale=1.0,
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
                 height=512,
                 width=512
             ).images[0]
@@ -275,6 +337,7 @@ async def generate_wallpaper_endpoint(request: GenerationRequest):
 
 @app.get("/random-seed/")
 async def random_seed_endpoint():
+<<<<<<< HEAD
     return {"seed": random.randint(1, 999999)}
 
 @app.get("/health")
@@ -285,3 +348,6 @@ if __name__ == "__main__":
     print("Starting AI Wallpaper Generator API...")
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
+=======
+    return {"seed": random.randint(1, 999999)}
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1

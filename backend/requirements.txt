@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 fastapi==0.111.0
 uvicorn[standard]==0.30.1
 torch
@@ -10,3 +11,14 @@ scipy==1.13.1
 transformers==4.41.2
 safetensors==0.4.3
 python-multipart==0.0.9
+=======
+fastapi
+uvicorn[standard]
+torch
+accelerate
+diffusers
+scikit-learn
+Pillow
+numpy 
+python-multipart
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
