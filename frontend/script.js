@@ -30,7 +30,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let recentCreations = [];
     let statusInterval;
     const MAX_BG_IMAGES = 6;
+<<<<<<< HEAD
+    const MAX_RECENTS = 4;
+
+    // Preloaded example images for floating background
+    const EXAMPLE_IMAGES = [
+        'examples/img1.png',
+        'examples/img2.png',
+        'examples/img3.png',
+        'examples/img4.png',
+        'examples/img5.png',
+        'examples/img6.png',
+    ];
+=======
     const MAX_RECENTS = 8;
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
 
     // Enhanced Particles System
     function createParticles() {
@@ -91,6 +105,126 @@ document.addEventListener('DOMContentLoaded', () => {
         backgroundImages.push(img);
     }
 
+<<<<<<< HEAD
+    function addFloatingImageFromExamples() {
+        const imageUrl = EXAMPLE_IMAGES[Math.floor(Math.random() * EXAMPLE_IMAGES.length)];
+        addFloatingImage(imageUrl);
+    }
+
+    function addFloatingImageAt(imageUrl, topPercent, leftPercent, cellWPercent) {
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.className = 'floating-bg';
+
+        if (backgroundImages.length >= MAX_BG_IMAGES) {
+            const oldImg = backgroundImages.shift();
+            oldImg.style.opacity = '0';
+            oldImg.style.transform = 'scale(0.8)';
+            setTimeout(() => oldImg.remove(), 1000);
+        }
+
+        // Size scaled to cell width for better spacing
+        const cellWidthPx = window.innerWidth * (cellWPercent / 100);
+        const targetWidth = Math.max(120, Math.min(220, cellWidthPx * 0.6));
+        img.style.width = `${Math.round(targetWidth)}px`;
+        img.style.height = 'auto';
+
+        // track percent positions for later adjustment
+        img.dataset.topPercent = String(topPercent);
+        img.dataset.leftPercent = String(leftPercent);
+        img.style.top = `${topPercent}%`;
+        img.style.left = `${leftPercent}%`;
+        img.style.animationDuration = `${Math.random() * 15 + 20}s`;
+        img.style.zIndex = Math.floor(Math.random() * 3) + 1;
+
+        elements.backgroundContainer.appendChild(img);
+
+        // After the image has dimensions, nudge it so no more than 50% is under the controls card
+        if (img.complete) {
+            adjustToAvoidControls(img, 8);
+        } else {
+            img.addEventListener('load', () => adjustToAvoidControls(img, 8), { once: true });
+        }
+
+        backgroundImages.push(img);
+    }
+
+    function computeEvenPositions(count, margin = 8) {
+        const cols = Math.ceil(Math.sqrt(count));
+        const rows = Math.ceil(count / cols);
+        const availableW = 100 - 2 * margin;
+        const availableH = 100 - 2 * margin;
+        const cellW = availableW / cols;
+        const cellH = availableH / rows;
+        const positions = [];
+        for (let i = 0; i < count; i++) {
+            const r = Math.floor(i / cols);
+            const c = i % cols;
+            let top = margin + (r + 0.5) * cellH;
+            let left = margin + (c + 0.5) * cellW;
+            const jitterX = (Math.random() - 0.5) * cellW * 0.3;
+            const jitterY = (Math.random() - 0.5) * cellH * 0.3;
+            top += jitterY;
+            left += jitterX;
+            top = Math.max(margin, Math.min(100 - margin, top));
+            left = Math.max(margin, Math.min(100 - margin, left));
+            positions.push({ top, left });
+        }
+        return { positions, cellW, cellH, rows, cols };
+    }
+
+    function computeOverlapArea(r1, r2) {
+        const x = Math.max(0, Math.min(r1.right, r2.right) - Math.max(r1.left, r2.left));
+        const y = Math.max(0, Math.min(r1.bottom, r2.bottom) - Math.max(r1.top, r2.top));
+        return x * y;
+    }
+
+    function adjustToAvoidControls(img, margin = 8) {
+        const controls = document.querySelector('.controls');
+        if (!controls) return;
+
+        const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
+        let topP = parseFloat(img.dataset.topPercent || '50');
+        let leftP = parseFloat(img.dataset.leftPercent || '50');
+
+        const step = 3; // percent per nudge
+        const maxTries = 25;
+
+        for (let i = 0; i < maxTries; i++) {
+            const imgRect = img.getBoundingClientRect();
+            const ctrlRect = controls.getBoundingClientRect();
+            const imgArea = imgRect.width * imgRect.height;
+            if (!imgArea) break;
+
+            const overlap = computeOverlapArea(imgRect, ctrlRect);
+            const ratio = overlap / imgArea;
+            if (ratio <= 0.5) break; // acceptable
+
+            const cx = ctrlRect.left + ctrlRect.width / 2;
+            const cy = ctrlRect.top + ctrlRect.height / 2;
+            const ix = imgRect.left + imgRect.width / 2;
+            const iy = imgRect.top + imgRect.height / 2;
+
+            const overlapW = Math.max(0, Math.min(imgRect.right, ctrlRect.right) - Math.max(imgRect.left, ctrlRect.left));
+            const overlapH = Math.max(0, Math.min(imgRect.bottom, ctrlRect.bottom) - Math.max(imgRect.top, ctrlRect.top));
+
+            if (overlapW >= overlapH) {
+                const dir = ix < cx ? -1 : 1; // move away horizontally
+                leftP = clamp(leftP + dir * step, margin, 100 - margin);
+            } else {
+                const dir = iy < cy ? -1 : 1; // move away vertically
+                topP = clamp(topP + dir * step, margin, 100 - margin);
+            }
+
+            img.dataset.topPercent = String(topP);
+            img.dataset.leftPercent = String(leftP);
+            img.style.top = `${topP}%`;
+            img.style.left = `${leftP}%`;
+        }
+    }
+
+=======
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
     // Enhanced Status Messages
     function startStatusUpdates() {
         const messages = [
@@ -213,8 +347,11 @@ document.addEventListener('DOMContentLoaded', () => {
             elements.resultImage.src = data.image;
             elements.resultImage.classList.remove('hidden');
 
+<<<<<<< HEAD
+=======
             // Add to floating background
             addFloatingImage(data.image);
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
 
             // Show tools and palette
             elements.postGenerationTools.classList.remove('hidden');
@@ -320,6 +457,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Everything
     createParticles();
     typeText(elements.tagline, "Create unique, high-resolution wallpapers with AI magic ");
+<<<<<<< HEAD
+    if (typeof initThemeSelector === 'function') {
+        initThemeSelector();
+    }
+
+    // Compute an even spread layout and seed images
+    const layout = computeEvenPositions(EXAMPLE_IMAGES.length, 8);
+    EXAMPLE_IMAGES.forEach((src, i) => {
+        const pos = layout.positions[i];
+        setTimeout(() => addFloatingImageAt(src, pos.top, pos.left, layout.cellW), i * 400);
+    });
+
+    // Keep floating background anchored during scroll (no parallax)
+    window.addEventListener('scroll', () => {
+        elements.backgroundContainer.style.transform = 'translateY(0)';
+=======
     initThemeSelector();
 
     // Smooth scrolling for better UX
@@ -328,6 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const parallax = elements.backgroundContainer;
         const speed = scrolled * 0.5;
         parallax.style.transform = `translateY(${speed}px)`;
+>>>>>>> 1e1ffb2ebcf55de845344befc5de48bb2fbbf3e1
     });
 
     // Add keyboard shortcuts

@@ -1,0 +1,5 @@
+.venv
+.pipcache
+.tmp
+start_server.ps1
+models/ 
